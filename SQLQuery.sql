@@ -1,4 +1,4 @@
-﻿SELECT 
+﻿SELECT Top 5
     g.GameID,
     g.Name AS GameName,
     g.ReleaseDate,
@@ -26,3 +26,7 @@
 FROM Games g
 
 ORDER BY g.ReleaseDate DESC
+
+select top 1 * from Publishers
+
+insert into Publishers(PublisherID,Name) values (1, 'Activision')

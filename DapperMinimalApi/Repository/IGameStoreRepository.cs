@@ -8,5 +8,7 @@ namespace DapperMinimalApi.Repository
         dynamic GetAllGames();
         dynamic getById(int id);
         dynamic GetSummary();
+        dynamic testMultiple(int IDS);
+        dynamic testTransaction();
     }
 }

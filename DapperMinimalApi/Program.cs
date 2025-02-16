@@ -1,4 +1,5 @@
 using DapperMinimalApi.Repository;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace DapperMinimalApi
 {
@@ -52,6 +53,29 @@ namespace DapperMinimalApi
             app.MapGet("get-summary", (IGameStoreRepository gameStore) =>
             {
                 return gameStore.GetSummary();
+            });
+
+            // test multiple 
+
+            app.MapGet("get-multiplee/{ID}", (int ID,IGameStoreRepository gameStore) =>
+            {
+                return gameStore.testMultiple(ID);
+            });
+
+            // test Transaction
+
+            app.MapGet("testTransaction", (IGameStoreRepository gameStore) =>
+            {
+                var result =  gameStore.testTransaction();
+
+                if(result.Success == true)
+                {
+                    return Results.Ok(result);
+                }
+                else
+                {
+                    return Results.BadRequest(result);
+                }
             });
 
 
