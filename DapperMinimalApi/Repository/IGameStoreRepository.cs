@@ -10,5 +10,7 @@ namespace DapperMinimalApi.Repository
         dynamic GetSummary();
         dynamic testMultiple(int IDS);
         dynamic testTransaction();
+        List<Game> GameInfo();
+        List<Game> gameWIthScreens();
     }
 }

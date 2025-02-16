@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DapperMinimalApi.Repository.Models;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 using System.Data;
 using System.Runtime.CompilerServices;
 using System.Transactions;
@@ -154,6 +155,71 @@ ORDER BY g.ReleaseDate DESC;";
                 return new { Success = false, Message = "Transaction failed", Error = ex.Message };
             }
         }
+
+
+        // One TO one Relationship
+        public List<Game> GameInfo()
+        {
+            using (var connection = _dapperContext.GetConnection())
+            {
+                string sql = $@"
+Select *
+from Games G 
+Join Packages P on P.GameID = G.GameID;
+";
+                var gameDetails = connection.Query<Game, Package, Game>(sql, (game, packages) =>
+                {
+
+                    game.Packages.Add(packages);
+                    return game;
+                }, splitOn: "GameID").ToList();
+                return gameDetails;
+            }
+        }
+
+
+        // One to Many Relationship
+
+        public List<Game> gameWIthScreens()
+        {
+            var dictionary = new Dictionary<int, Game>();
+
+            using (var connection = _dapperContext.GetConnection())
+            {
+                string sql = @"
+        SELECT 
+            *,
+            S.ScreenshotID, S.GameID, S.URL
+        FROM 
+            (SELECT TOP 3 * FROM Games ORDER BY ReleaseDate DESC) AS G
+        LEFT JOIN Screenshots S ON S.GameID = G.GameID
+        ORDER BY G.gameID DESC ";
+
+                var games = connection.Query<Game, Screenshot, Game>(
+                    sql,
+                    (game, screenshot) =>
+                    {
+                        if (!dictionary.TryGetValue(game.GameID, out var existingGame))
+                        {
+                            existingGame = game;
+                            existingGame.Screenshots = new List<Screenshot>();
+                            dictionary.Add(existingGame.GameID, existingGame);
+                        }
+
+                        if (screenshot != null)
+                        {
+                            existingGame.Screenshots.Add(screenshot);
+                        }
+
+                        return existingGame;
+                    },
+                    splitOn: "ScreenshotID")
+                    .ToList();
+
+                return games;
+            }
+        }
+
 
     }
 }

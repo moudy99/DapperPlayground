@@ -78,6 +78,18 @@ namespace DapperMinimalApi
                 }
             });
 
+            app.MapGet("game-info", (IGameStoreRepository gameStore) =>
+            {
+                var result = gameStore.GameInfo();
+                return result;
+            });
+
+            // test one to many 
+            app.MapGet("game/screens", (IGameStoreRepository gameStore) =>
+            {
+                var result = gameStore.gameWIthScreens();
+                return result;
+            });
 
             app.Run();
         }
