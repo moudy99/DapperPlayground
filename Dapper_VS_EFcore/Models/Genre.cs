@@ -1,4 +1,4 @@
-﻿namespace DapperMinimalApi.Repository.Models
+﻿namespace Dapper_VS_EFcore.Models
 {
     public class Genre
     {

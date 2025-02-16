@@ -1,0 +1,6 @@
+@Dapper_VS_EFcore_HostAddress = http://localhost:5217
+
+GET {{Dapper_VS_EFcore_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

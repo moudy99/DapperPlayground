@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using DapperMinimalApi.Repository.Models;
+using DapperMinimalApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using System.Data;

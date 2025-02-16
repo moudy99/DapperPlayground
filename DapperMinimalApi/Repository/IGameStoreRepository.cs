@@ -1,4 +1,4 @@
-﻿using DapperMinimalApi.Repository.Models;
+﻿using DapperMinimalApi.Models;
 
 namespace DapperMinimalApi.Repository
 {

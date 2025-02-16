@@ -1,6 +1,5 @@
-﻿using Azure;
-
-namespace DapperMinimalApi.Repository.Models
+﻿
+namespace DapperMinimalApi.Models
 {
     public class Game
     {

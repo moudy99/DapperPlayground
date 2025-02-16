@@ -1,4 +1,4 @@
-﻿namespace DapperMinimalApi.Repository.Models
+﻿namespace DapperMinimalApi.Models
 {
     public class Language
     {

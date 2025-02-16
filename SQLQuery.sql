@@ -49,6 +49,6 @@ checksum(NewID())) % 90000 +1 As GameID,
             *,
             S.ScreenshotID, S.GameID, S.URL
         FROM 
-            (SELECT TOP 3 * FROM Games ORDER BY ReleaseDate DESC) AS G
+            (SELECT TOP 3 * FROM Games ORDER BY GameID ASC) AS G
         LEFT JOIN Screenshots S ON S.GameID = G.GameID
         ORDER BY G.GameID ASC
