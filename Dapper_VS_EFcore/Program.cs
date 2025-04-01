@@ -17,30 +17,7 @@ namespace Dapper_VS_EFcore
             builder.Services.AddControllers();
 
 
-            // i can solve the issue of the circler reference by make the json serializer ignore the loop reference
-            // but this will add $id and $ref to the json response so he can ignoire the obj
-            #region Json Serializer to resolve the circler issue 
-            /*
-               builder.Services.AddControllers()
-                .AddJsonOptions(opt =>
-                {
-                    opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-                    opt.JsonSerializerOptions.MaxDepth = 64;
-                });
-             */
-            #endregion
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<EFcoreDbContext>(opt =>
-            {
-                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly(typeof(EFcoreDbContext).Assembly.FullName));
-            });
-
-  
-
-            builder.Services.AddScoped<IBaseRepository, EfCoreRepository>();
+            builder.Services.DependencyServices(configuration);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

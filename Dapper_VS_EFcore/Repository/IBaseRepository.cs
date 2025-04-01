@@ -5,6 +5,8 @@ namespace Dapper_VS_EFcore.Repository
 {
     public interface IBaseRepository
     {
-        GameDto GetById(int id);
+        GlobalResponse<GameDto> GetById(int id);
+
+        
     }
 }
