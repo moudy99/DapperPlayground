@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using DapperMinimalApi.Models;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using System.Data;
@@ -11,10 +12,12 @@ namespace DapperMinimalApi.Repository
     public class GameStoreRepository : IGameStoreRepository
     {
         private readonly DapperContext _dapperContext;
+        private readonly IMemoryCache memoryCache;
 
-        public GameStoreRepository(DapperContext dapperContext)
+        public GameStoreRepository(DapperContext dapperContext , IMemoryCache memoryCache)
         {
             this._dapperContext = dapperContext;
+            this.memoryCache = memoryCache;
         }
 
         public int GetGamesCount()
@@ -29,15 +32,25 @@ namespace DapperMinimalApi.Repository
 
         public dynamic GetAllGames()
         {
-            using (var connection = _dapperContext.GetConnection())
+            if (memoryCache.TryGetValue("all-games", out List<Game> games))
             {
-                string sql = "SELECT * FROM GAMES where GameID in @ids";
-                int[] Ids = [1, 2, 3, 4, 5, 6, 7];
-                var result = connection.Query<Game>(sql, new { ids = Ids });
-
-                return result;
+                return new GlobalResponse { Message = "Data from cache", Data = games, IsSuccess = true };
             }
+            else
+            {
+                using (var connection = _dapperContext.GetConnection())
+                {
+                    string sql = "SELECT * FROM GAMES WHERE GameID in @ids ";
+                    int[] Ids = Enumerable.Range(1, 1000).ToArray();
+                    var result = connection.Query<Game>(sql, new { ids = Ids });
 
+                    var cacheEntryOptions = new MemoryCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromSeconds(3));
+
+                    memoryCache.Set("all-games", result, cacheEntryOptions);
+                    return new GlobalResponse { Message = "Data from Database", Data = result, IsSuccess = true };
+                }
+            }
         }
 
         public dynamic getById(int GameId)

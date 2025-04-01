@@ -1,5 +1,4 @@
-﻿
-namespace Dapper_VS_EFcore.Models
+﻿namespace Dapper_VS_EFcore.Models
 {
     public class Game
     {
@@ -12,12 +11,13 @@ namespace Dapper_VS_EFcore.Models
         public int? MetacriticScore { get; set; }
         public string? Website { get; set; }
 
-        public List<Developer> Developers { get; set; } = new();
-        public List<Publisher> Publishers { get; set; } = new();
-        public List<Category> Categories { get; set; } = new();
-        public List<Genre> Genres { get; set; } = new();
-        public List<Tag> Tags { get; set; } = new();
-        public List<Language> Languages { get; set; } = new();
+        public List<GameDeveloper> GameDevelopers { get; set; } = new();
+        public List<GamePublisher> GamePublishers { get; set; } = new();
+        public List<GameCategory> GameCategories { get; set; } = new();
+        public List<GameGenre> GameGenres { get; set; } = new();
+        public List<GameTag> GameTags { get; set; } = new();
+        public List<GameLanguage> GameLanguages { get; set; } = new();
+
         public List<Screenshot> Screenshots { get; set; } = new();
         public List<Package> Packages { get; set; } = new();
     }

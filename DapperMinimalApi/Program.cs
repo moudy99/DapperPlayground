@@ -17,7 +17,11 @@ namespace DapperMinimalApi
 
             builder.Services.AddSingleton<DapperContext>();
             builder.Services.AddScoped<IGameStoreRepository, GameStoreRepository>();
-            
+            // Configure MemoryCache with global expiration policy
+            builder.Services.AddMemoryCache(options =>
+            {
+                options.ExpirationScanFrequency = TimeSpan.FromSeconds(1);
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
