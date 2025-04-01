@@ -4,6 +4,7 @@
     {
         public int DeveloperID { get; set; }
         public string Name { get; set; } = string.Empty;
-    }
 
+        public List<GameDeveloper> GameDevelopers { get; set; } = new();
+    }
 }
