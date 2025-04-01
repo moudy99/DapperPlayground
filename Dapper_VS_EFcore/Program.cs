@@ -38,9 +38,18 @@ namespace Dapper_VS_EFcore
                     b => b.MigrationsAssembly(typeof(EFcoreDbContext).Assembly.FullName));
             });
 
-  
 
-            builder.Services.AddScoped<IBaseRepository, EfCoreRepository>();
+            #region For Ef core ->
+            //builder.Services.AddScoped<IBaseRepository, EfCoreRepository>();
+            //**** here in the get Game by iD , the best time it return in 147ms.
+            #endregion
+
+            #region For Dapper->
+              builder.Services.AddScoped<IBaseRepository, DapperRepository>();
+            //**** here in the get Game by iD , the best time it return in 45ms.
+
+            #endregion
+            builder.Services.AddSingleton<DapperDBContext>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

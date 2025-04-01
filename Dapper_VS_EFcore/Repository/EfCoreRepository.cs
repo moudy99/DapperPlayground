@@ -14,7 +14,7 @@ namespace Dapper_VS_EFcore.Repository
             this.dbContext = dbContext;
         }
 
-        public GameDto GetById(int id)
+        public GlobalResponse<GameDto> GetById(int id)
         {
             var game = dbContext.Games
                 .Where(g => g.GameID == id)
@@ -28,9 +28,9 @@ namespace Dapper_VS_EFcore.Repository
                 .Include(g => g.Packages)
                 .FirstOrDefault();
 
-            if (game == null) return null;
+            if (game == null) return new GlobalResponse<GameDto> { Message = "there is no game with this id" };
 
-            return new GameDto
+            GameDto returnData= new GameDto
             {
                 GameID = game.GameID,
                 Name = game.Name,
@@ -57,6 +57,13 @@ namespace Dapper_VS_EFcore.Repository
                     Title = p.Title,
                     Price = p.Price
                 }).ToList()
+            };
+      
+            return new GlobalResponse<GameDto>
+            {
+                Data = returnData,
+                Message = "Success, From Ef Core",
+                IsSuccess = true
             };
         }
     }
