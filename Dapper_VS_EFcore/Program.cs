@@ -1,4 +1,5 @@
 
+using Dapper_VS_EFcore.Configurations;
 using Dapper_VS_EFcore.Context;
 using Dapper_VS_EFcore.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,10 @@ namespace Dapper_VS_EFcore
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // add logging config => 
+            builder.Logging.ClearProviders();
+            builder.Host.SeriLogConfigure();
             ConfigurationManager configuration = builder.Configuration;
 
             // Add services to the container.
@@ -29,7 +34,7 @@ namespace Dapper_VS_EFcore
 
             app.UseAuthorization();
 
-
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
             app.MapControllers();
 
             app.Run();
